@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>纖萃體態管理諮詢表｜又嘉健康顧問</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sage: #7A9E7E;
+    --sage-light: #A8C5AC;
+    --sage-pale: #EEF4EE;
+    --cream: #FBF8F3;
+    --warm-brown: #8B6B4A;
+    --warm-brown-light: #C4A882;
+    --text-dark: #2C2C2C;
+    --text-mid: #5A5A5A;
+    --text-soft: #9A9A9A;
+    --border: #DDE5DD;
+    --accent: #C97B5A;
+    --white: #FFFFFF;
+    --shadow: 0 4px 24px rgba(122,158,126,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 10% 20%, rgba(122,158,126,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 90% 80%, rgba(201,123,90,0.06) 0%, transparent 50%);
+  }
+
+  .header {
+    background: linear-gradient(135deg, #3D6B47 0%, #5E8F66 50%, #7A9E7E 100%);
+    padding: 48px 24px 56px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 50%;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -40px;
+    width: 240px; height: 240px;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 50%;
+  }
+  .header-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #fff;
+    font-size: 12px;
+    letter-spacing: 3px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+    font-weight: 300;
+  }
+  .header h1 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(26px, 5vw, 38px);
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+  .header p {
+    color: rgba(255,255,255,0.8);
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.8;
+  }
+  .header-icon { font-size: 40px; margin-bottom: 16px; display: block; }
+
+  .product-bar {
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    justify-content: center;
+    align-items: center;
+  }
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: var(--sage);
+    font-weight: 500;
+    background: var(--sage-pale);
+    border-radius: 20px;
+    padding: 5px 12px;
+    border: 1px solid var(--border);
+  }
+  .tag .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--sage); flex-shrink: 0; }
+
+  .container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+  }
+
+  .progress-wrap {
+    margin-bottom: 32px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--cream);
+    padding: 12px 0 8px;
+  }
+  .progress-label { font-size: 12px; color: var(--text-soft); margin-bottom: 8px; text-align: right; }
+  .progress-bar { height: 4px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--sage), var(--warm-brown-light));
+    border-radius: 4px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+
+  .section {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 32px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.5s ease forwards;
+  }
+  .section:nth-child(1){animation-delay:.1s}.section:nth-child(2){animation-delay:.15s}
+  .section:nth-child(3){animation-delay:.2s}.section:nth-child(4){animation-delay:.25s}
+  .section:nth-child(5){animation-delay:.3s}.section:nth-child(6){animation-delay:.35s}
+  .section:nth-child(7){animation-delay:.4s}
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .section:hover { box-shadow: 0 8px 36px rgba(122,158,126,0.16); }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--sage-pale);
+  }
+  .section-num {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--sage), #5E8F66);
+    border-radius: 50%;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-title { font-family: 'Noto Serif TC', serif; font-size: 17px; font-weight: 600; color: var(--text-dark); letter-spacing: 1px; }
+  .section-sub { font-size: 12px; color: var(--text-soft); font-weight: 300; margin-top: 2px; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .form-row.single { grid-template-columns: 1fr; }
+  .form-row.triple { grid-template-columns: 1fr 1fr 1fr; }
+  @media (max-width: 520px) { .form-row, .form-row.triple { grid-template-columns: 1fr; } }
+
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+
+  label { font-size: 13px; font-weight: 500; color: var(--text-mid); letter-spacing: 0.5px; }
+  label .req { color: var(--accent); margin-left: 3px; }
+  label .hint { font-size: 11px; color: var(--text-soft); font-weight: 300; margin-left: 4px; }
+
+  input[type="text"], input[type="number"], input[type="tel"], input[type="date"], select, textarea {
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 11px 14px;
+    font-size: 14px;
+    color: var(--text-dark);
+    background: var(--cream);
+    font-family: 'Noto Sans TC', sans-serif;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    outline: none;
+    width: 100%;
+    -webkit-appearance: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--sage);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(122,158,126,0.12);
+  }
+  input::placeholder, textarea::placeholder { color: var(--text-soft); font-weight: 300; }
+  select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239A9A9A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+  }
+  textarea { min-height: 80px; resize: vertical; line-height: 1.6; }
+
+  .input-wrap { position: relative; }
+  .input-wrap .unit { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 12px; color: var(--text-soft); pointer-events: none; }
+  .input-wrap input { padding-right: 42px; }
+
+  .choice-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px; }
+  .choice-item { display: none; }
+  .choice-item + label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 30px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--cream);
+    user-select: none;
+    color: var(--text-mid);
+    font-weight: 400;
+  }
+  .choice-item + label:hover { border-color: var(--sage-light); background: var(--sage-pale); color: var(--sage); }
+  .choice-item:checked + label { border-color: var(--sage); background: var(--sage-pale); color: var(--sage); font-weight: 500; }
+  .choice-item.accent:checked + label { border-color: var(--accent); background: #FDF2EC; color: var(--accent); }
+
+  .scale-wrap { margin-top: 4px; }
+  .scale-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-soft); margin-bottom: 8px; }
+  .scale-buttons { display: flex; gap: 6px; flex-wrap: wrap; }
+  .scale-btn { display: none; }
+  .scale-btn + label {
+    width: 38px; height: 38px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: var(--cream);
+    color: var(--text-mid);
+  }
+  .scale-btn + label:hover { border-color: var(--sage-light); background: var(--sage-pale); }
+  .scale-btn:checked + label { background: var(--sage); border-color: var(--sage); color: #fff; font-weight: 700; }
+
+  .info-box {
+    background: linear-gradient(135deg, var(--sage-pale), #F5FAF5);
+    border: 1px solid var(--sage-light);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin: 20px 0 0;
+    font-size: 13px;
+    color: var(--text-mid);
+    line-height: 2;
+  }
+  .info-box strong { color: var(--sage); font-weight: 600; }
+
+  .warn-box {
+    background: #FEF9EC;
+    border: 1px solid #F5D87A;
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: #7A5C1E;
+    line-height: 1.8;
+    margin-top: 20px;
+    display: none;
+  }
+
+  .submit-section {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 36px;
+    text-align: center;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    margin-top: 20px;
+  }
+  .submit-section p { font-size: 13px; color: var(--text-soft); margin-bottom: 24px; line-height: 1.8; }
+
+  .btn-submit {
+    background: linear-gradient(135deg, #3D6B47, #7A9E7E);
+    color: #fff;
+    border: none;
+    padding: 16px 56px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    cursor: pointer;
+    font-family: 'Noto Sans TC', sans-serif;
+    transition: all 0.3s;
+    box-shadow: 0 6px 24px rgba(61,107,71,0.3);
+    position: relative;
+    min-width: 200px;
+  }
+  .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(61,107,71,0.4); }
+  .btn-submit:active { transform: translateY(0); }
+  .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+  /* LOADING SPINNER */
+  .spinner {
+    display: none;
+    width: 20px; height: 20px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin: 0 auto;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .btn-submit.loading .btn-text { display: none; }
+  .btn-submit.loading .spinner { display: block; }
+
+  /* ERROR TOAST */
+  .toast {
+    position: fixed;
+    bottom: 32px; left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #E05555;
+    color: #fff;
+    padding: 14px 24px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 9999;
+    opacity: 0;
+    transition: all 0.4s ease;
+    max-width: 90vw;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(224,85,85,0.3);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  /* SUCCESS OVERLAY */
+  .success-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(6px);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .success-overlay.show { display: flex; }
+  .success-card {
+    background: #fff;
+    border-radius: 24px;
+    padding: 48px 40px;
+    text-align: center;
+    max-width: 420px;
+    width: 100%;
+    animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .success-icon { font-size: 64px; margin-bottom: 20px; display: block; }
+  .success-card h2 { font-family: 'Noto Serif TC', serif; font-size: 22px; color: var(--sage); margin-bottom: 12px; }
+  .success-card p { font-size: 14px; color: var(--text-mid); line-height: 2; }
+  .btn-close {
+    margin-top: 24px;
+    background: var(--sage-pale);
+    border: 1.5px solid var(--sage-light);
+    color: var(--sage);
+    padding: 10px 32px;
+    border-radius: 30px;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  .btn-close:hover { background: var(--sage); color: #fff; }
+
+  .footer { text-align: center; padding: 24px; font-size: 12px; color: var(--text-soft); letter-spacing: 0.5px; }
+  .bmi-result {
+    background: var(--cream);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--text-mid);
+    min-height: 46px;
+    display: flex;
+    align-items: center;
+  }
+  .bmi-value { font-size: 20px; font-weight: 700; color: var(--sage); margin-right: 8px; }
+</style>
+</head>
+<body>
+
+<!-- ===== 設定區：填入你的 Apps Script 網址 ===== -->
+<script>
+  // ★ 請將下方替換成你的 Google Apps Script 部署網址
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbzFPMuAbzwRQUUODoIJWt7eW-UJwJFYXQ0DdcMkvW6I4BllxovV47um4re2yRR2Oag7tA/exec";
+</script>
+<!-- ============================================ -->
+
+<div class="header">
+  <span class="header-icon">🌿</span>
+  <div class="header-badge">YOCHIA × 纖萃健康管理</div>
+  <h1>體態管理諮詢表</h1>
+  <p>歡迎填寫以下資料，讓又嘉為您量身規劃<br>最適合的纖萃使用計畫與飲食建議</p>
+</div>
+
+<div class="product-bar">
+  <span class="tag"><span class="dot"></span>天然植物萃取</span>
+  <span class="tag"><span class="dot"></span>奶素可食</span>
+  <span class="tag"><span class="dot"></span>不含咖啡因</span>
+  <span class="tag"><span class="dot"></span>12張國際認證</span>
+  <span class="tag"><span class="dot"></span>產後哺乳可食</span>
+</div>
+
+<div class="container">
+  <div class="progress-wrap">
+    <div class="progress-label" id="progressLabel">完成度 0%</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+
+  <form id="mainForm" novalidate>
+
+    <!-- 1. 基本資料 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">1</div>
+        <div>
+          <div class="section-title">基本資料</div>
+          <div class="section-sub">Basic Information</div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>姓名<span class="req">*</span></label>
+          <input type="text" name="name" placeholder="您的稱呼" required>
+        </div>
+        <div class="form-group">
+          <label>聯絡方式<span class="req">*</span><span class="hint">(LINE / 手機)</span></label>
+          <input type="text" name="contact" placeholder="LINE ID 或手機號碼" required>
+        </div>
+      </div>
+      <div class="form-row triple">
+        <div class="form-group">
+          <label>年齡<span class="req">*</span></label>
+          <div class="input-wrap">
+            <input type="number" name="age" placeholder="歲" min="15" max="80" required>
+            <span class="unit">歲</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>性別<span class="req">*</span></label>
+          <select name="gender" required>
+            <option value="">請選擇</option>
+            <option value="女性">女性</option>
+            <option value="男性">男性</option>
+            <option value="其他">其他</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>職業</label>
+          <input type="text" name="job" placeholder="例：上班族、媽媽">
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. 身體數據 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">2</div>
+        <div>
+          <div class="section-title">身體數據</div>
+          <div class="section-sub">Body Measurements</div>
+        </div>
+      </div>
+      <div class="form-row triple">
+        <div class="form-group">
+          <label>身高<span class="req">*</span></label>
+          <div class="input-wrap">
+            <input type="number" name="height" id="height" placeholder="160" min="100" max="220" required oninput="calcBMI()">
+            <span class="unit">cm</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>目前體重<span class="req">*</span></label>
+          <div class="input-wrap">
+            <input type="number" name="weight" id="weight" placeholder="60" min="30" max="200" step="0.1" required oninput="calcBMI()">
+            <span class="unit">kg</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>目標體重</label>
+          <div class="input-wrap">
+            <input type="number" name="goal_weight" placeholder="55" min="30" max="200" step="0.1">
+            <span class="unit">kg</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>腰圍<span class="hint">(可略)</span></label>
+          <div class="input-wrap">
+            <input type="number" name="waist" placeholder="cm" step="0.1">
+            <span class="unit">cm</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>BMI 自動計算</label>
+          <div class="bmi-result" id="bmiResult">請輸入身高和體重</div>
+        </div>
+      </div>
+      <div class="form-group" style="margin-top:4px">
+        <label>最近體脂率<span class="hint">(可略)</span></label>
+        <div class="input-wrap" style="max-width:200px">
+          <input type="number" name="body_fat" placeholder="25" step="0.1" min="5" max="60">
+          <span class="unit">%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. 飲食與生活習慣 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">3</div>
+        <div>
+          <div class="section-title">飲食與生活習慣</div>
+          <div class="section-sub">Diet & Lifestyle</div>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:16px">
+        <label>飲食習慣<span class="req">*</span><span class="hint">(可多選)</span></label>
+        <div class="choice-group">
+          <input type="checkbox" class="choice-item" name="diet" id="d1" value="正常三餐"><label for="d1">正常三餐</label>
+          <input type="checkbox" class="choice-item" name="diet" id="d2" value="外食為主"><label for="d2">外食為主</label>
+          <input type="checkbox" class="choice-item" name="diet" id="d3" value="少吃多動"><label for="d3">少吃多動</label>
+          <input type="checkbox" class="choice-item" name="diet" id="d4" value="愛吃甜食"><label for="d4">愛吃甜食</label>
+          <input type="checkbox" class="choice-item" name="diet" id="d5" value="宵夜習慣"><label for="d5">宵夜習慣</label>
+          <input type="checkbox" class="choice-item" name="diet" id="d6" value="不吃早餐"><label for="d6">不吃早餐</label>
+          <input type="checkbox" class="choice-item" name="diet" id="d7" value="速食常吃"><label for="d7">速食常吃</label>
+          <input type="checkbox" class="choice-item" name="diet" id="d8" value="素食"><label for="d8">素食</label>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>每日喝水量<span class="req">*</span></label>
+          <select name="water">
+            <option value="">請選擇</option>
+            <option value="少於1000cc">少於 1000cc</option>
+            <option value="1000-2000cc">1000 ~ 2000cc</option>
+            <option value="2000-3000cc">2000 ~ 3000cc</option>
+            <option value="超過3000cc">超過 3000cc ✅</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>排便狀況<span class="req">*</span></label>
+          <select name="bowel">
+            <option value="">請選擇</option>
+            <option value="每天順暢">每天順暢</option>
+            <option value="隔天一次">隔天一次</option>
+            <option value="2-3天一次">2~3天一次</option>
+            <option value="3天以上便秘">3天以上（便秘）</option>
+            <option value="不規律">不規律</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>運動習慣</label>
+          <select name="exercise">
+            <option value="">請選擇</option>
+            <option value="每天運動">每天運動</option>
+            <option value="每週3-4次">每週 3~4 次</option>
+            <option value="每週1-2次">每週 1~2 次</option>
+            <option value="偶爾運動">偶爾運動</option>
+            <option value="幾乎不運動">幾乎不運動</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>睡眠品質</label>
+          <select name="sleep">
+            <option value="">請選擇</option>
+            <option value="良好7-8小時">良好（7~8 小時）</option>
+            <option value="尚可5-6小時">尚可（5~6 小時）</option>
+            <option value="不足少於5小時">不足（少於 5 小時）</option>
+            <option value="輪班大夜不規律">輪班 / 大夜不規律</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" style="margin-top:4px">
+        <label>飲酒頻率</label>
+        <div class="choice-group">
+          <input type="radio" class="choice-item" name="alcohol" id="al0" value="不喝酒"><label for="al0">不喝酒</label>
+          <input type="radio" class="choice-item" name="alcohol" id="al1" value="偶爾喝"><label for="al1">偶爾喝</label>
+          <input type="radio" class="choice-item" name="alcohol" id="al2" value="每週喝"><label for="al2">每週喝</label>
+          <input type="radio" class="choice-item" name="alcohol" id="al3" value="幾乎每天"><label for="al3">幾乎每天</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. 健康狀況 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">4</div>
+        <div>
+          <div class="section-title">健康與身體狀況</div>
+          <div class="section-sub">Health Status</div>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:16px">
+        <label>是否有以下狀況？<span class="hint">(可多選)</span></label>
+        <div class="choice-group">
+          <input type="checkbox" class="choice-item accent" name="health" id="h1" value="高血壓"><label for="h1">高血壓</label>
+          <input type="checkbox" class="choice-item accent" name="health" id="h2" value="糖尿病"><label for="h2">糖尿病</label>
+          <input type="checkbox" class="choice-item accent" name="health" id="h3" value="高血脂"><label for="h3">高血脂</label>
+          <input type="checkbox" class="choice-item accent" name="health" id="h4" value="甲狀腺問題"><label for="h4">甲狀腺問題</label>
+          <input type="checkbox" class="choice-item accent" name="health" id="h5" value="心臟疾病"><label for="h5">心臟疾病</label>
+          <input type="checkbox" class="choice-item accent" name="health" id="h6" value="腸胃問題"><label for="h6">腸胃問題</label>
+          <input type="checkbox" class="choice-item accent" name="health" id="h7" value="過敏體質"><label for="h7">過敏體質</label>
+          <input type="checkbox" class="choice-item" name="health" id="h8" value="以上皆無"><label for="h8">✅ 以上皆無</label>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>是否懷孕或哺乳？<span class="req">*</span></label>
+          <div class="choice-group">
+            <input type="radio" class="choice-item" name="pregnant" id="pg0" value="否" required><label for="pg0">否</label>
+            <input type="radio" class="choice-item" name="pregnant" id="pg1" value="懷孕中"><label for="pg1">懷孕中</label>
+            <input type="radio" class="choice-item" name="pregnant" id="pg2" value="哺乳中"><label for="pg2">哺乳中 🤱</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>目前是否服用藥物？</label>
+          <div class="choice-group">
+            <input type="radio" class="choice-item" name="medication" id="med0" value="否"><label for="med0">否</label>
+            <input type="radio" class="choice-item" name="medication" id="med1" value="是"><label for="med1">是（請說明）</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group" style="margin-top:4px">
+        <label>藥物說明<span class="hint">(若有服藥請填寫)</span></label>
+        <input type="text" name="med_detail" placeholder="例：降血壓藥、甲狀腺藥…">
+      </div>
+      <div class="warn-box" id="pregnantWarn">
+        ⚠️ 纖萃為天然植物萃取，產後哺乳期間可安心補充。若正在懷孕，建議先諮詢婦產科醫師再使用。
+      </div>
+    </div>
+
+    <!-- 5. 減重歷程 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">5</div>
+        <div>
+          <div class="section-title">減重歷程</div>
+          <div class="section-sub">Weight Loss History</div>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:16px">
+        <label>曾嘗試過哪些減重方法？<span class="hint">(可多選)</span></label>
+        <div class="choice-group">
+          <input type="checkbox" class="choice-item" name="tried" id="t1" value="節食控卡"><label for="t1">節食控卡</label>
+          <input type="checkbox" class="choice-item" name="tried" id="t2" value="168斷食"><label for="t2">168 斷食</label>
+          <input type="checkbox" class="choice-item" name="tried" id="t3" value="運動減重"><label for="t3">運動減重</label>
+          <input type="checkbox" class="choice-item" name="tried" id="t4" value="減肥藥物"><label for="t4">減肥藥物</label>
+          <input type="checkbox" class="choice-item" name="tried" id="t5" value="瀉藥"><label for="t5">瀉藥</label>
+          <input type="checkbox" class="choice-item" name="tried" id="t6" value="低碳生酮"><label for="t6">低碳 / 生酮</label>
+          <input type="checkbox" class="choice-item" name="tried" id="t7" value="其他保健品"><label for="t7">其他保健品</label>
+          <input type="checkbox" class="choice-item" name="tried" id="t8" value="尚未嘗試"><label for="t8">尚未嘗試</label>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:16px">
+        <label>目前最困擾的問題？<span class="hint">(可多選)</span></label>
+        <div class="choice-group">
+          <input type="checkbox" class="choice-item" name="trouble" id="tr1" value="易胖體質"><label for="tr1">易胖體質</label>
+          <input type="checkbox" class="choice-item" name="trouble" id="tr2" value="下半身肥胖"><label for="tr2">下半身肥胖</label>
+          <input type="checkbox" class="choice-item" name="trouble" id="tr3" value="腹部脂肪"><label for="tr3">小腹腰間肉</label>
+          <input type="checkbox" class="choice-item" name="trouble" id="tr4" value="代謝緩慢"><label for="tr4">代謝緩慢</label>
+          <input type="checkbox" class="choice-item" name="trouble" id="tr5" value="容易水腫"><label for="tr5">容易水腫</label>
+          <input type="checkbox" class="choice-item" name="trouble" id="tr6" value="無法持之以恆"><label for="tr6">無法持之以恆</label>
+          <input type="checkbox" class="choice-item" name="trouble" id="tr7" value="容易復胖"><label for="tr7">容易復胖</label>
+          <input type="checkbox" class="choice-item" name="trouble" id="tr8" value="便秘困擾"><label for="tr8">便秘困擾</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>希望在幾個月內達成目標？</label>
+        <div class="choice-group">
+          <input type="radio" class="choice-item" name="timeline" id="tm1" value="1個月"><label for="tm1">1 個月</label>
+          <input type="radio" class="choice-item" name="timeline" id="tm2" value="3個月"><label for="tm2">3 個月</label>
+          <input type="radio" class="choice-item" name="timeline" id="tm3" value="6個月"><label for="tm3">6 個月</label>
+          <input type="radio" class="choice-item" name="timeline" id="tm4" value="慢慢來沒關係"><label for="tm4">慢慢來沒關係</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. 纖萃了解度 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">6</div>
+        <div>
+          <div class="section-title">關於纖萃</div>
+          <div class="section-sub">Product Awareness</div>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:16px">
+        <label>您是如何認識纖萃的？</label>
+        <div class="choice-group">
+          <input type="radio" class="choice-item" name="source" id="s1" value="IG/FB"><label for="s1">IG / FB</label>
+          <input type="radio" class="choice-item" name="source" id="s2" value="朋友推薦"><label for="s2">朋友推薦</label>
+          <input type="radio" class="choice-item" name="source" id="s3" value="YouTube"><label for="s3">YouTube</label>
+          <input type="radio" class="choice-item" name="source" id="s4" value="LINE群組"><label for="s4">LINE 群組</label>
+          <input type="radio" class="choice-item" name="source" id="s5" value="Google搜尋"><label for="s5">Google 搜尋</label>
+          <input type="radio" class="choice-item" name="source" id="s6" value="其他"><label for="s6">其他</label>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:16px">
+        <label>目前對纖萃的了解程度</label>
+        <div class="scale-wrap">
+          <div class="scale-labels"><span>完全不了解</span><span>非常了解</span></div>
+          <div class="scale-buttons">
+            <input type="radio" class="scale-btn" name="knowledge" id="k1" value="1"><label for="k1">1</label>
+            <input type="radio" class="scale-btn" name="knowledge" id="k2" value="2"><label for="k2">2</label>
+            <input type="radio" class="scale-btn" name="knowledge" id="k3" value="3"><label for="k3">3</label>
+            <input type="radio" class="scale-btn" name="knowledge" id="k4" value="4"><label for="k4">4</label>
+            <input type="radio" class="scale-btn" name="knowledge" id="k5" value="5"><label for="k5">5</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>對纖萃有什麼疑問或期待？</label>
+        <textarea name="question" placeholder="例如：不確定是否適合我、想知道多久看到效果、對成份有疑問…"></textarea>
+      </div>
+      <div class="info-box">
+        <strong>🌿 纖萃 5 大機制</strong><br>
+        ① 使排便順暢 &nbsp; ② 幫助消化 &nbsp; ③ 促進新陳代謝<br>
+        ④ 增加自然飽足感 &nbsp; ⑤ 調節生理機能<br><br>
+        <strong>📋 建議用法：</strong>午餐前＋晚餐前各 2 顆，每日飲水 3000cc 以上<br>
+        <strong>💪 加強保養：</strong>運動前、泡澡前、喝酒前後可額外補充
+      </div>
+    </div>
+
+    <!-- 7. 動機與承諾 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">7</div>
+        <div>
+          <div class="section-title">動機與承諾</div>
+          <div class="section-sub">Motivation</div>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:20px">
+        <label>想改善體態的最主要原因？</label>
+        <div class="choice-group">
+          <input type="radio" class="choice-item" name="motivation" id="m1" value="健康考量"><label for="m1">💪 健康考量</label>
+          <input type="radio" class="choice-item" name="motivation" id="m2" value="外觀自信"><label for="m2">✨ 外觀自信</label>
+          <input type="radio" class="choice-item" name="motivation" id="m3" value="婚禮特殊場合"><label for="m3">💍 婚禮 / 特殊場合</label>
+          <input type="radio" class="choice-item" name="motivation" id="m4" value="產後恢復"><label for="m4">🤱 產後恢復</label>
+          <input type="radio" class="choice-item" name="motivation" id="m5" value="醫師建議"><label for="m5">🏥 醫師建議</label>
+          <input type="radio" class="choice-item" name="motivation" id="m6" value="其他"><label for="m6">其他</label>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:20px">
+        <label>改變的決心有多強？</label>
+        <div class="scale-wrap">
+          <div class="scale-labels"><span>隨便試試</span><span>非常堅定</span></div>
+          <div class="scale-buttons">
+            <input type="radio" class="scale-btn" name="commitment" id="c1" value="1"><label for="c1">1</label>
+            <input type="radio" class="scale-btn" name="commitment" id="c2" value="2"><label for="c2">2</label>
+            <input type="radio" class="scale-btn" name="commitment" id="c3" value="3"><label for="c3">3</label>
+            <input type="radio" class="scale-btn" name="commitment" id="c4" value="4"><label for="c4">4</label>
+            <input type="radio" class="scale-btn" name="commitment" id="c5" value="5"><label for="c5">5</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>還有想讓又嘉知道的事？</label>
+        <textarea name="extra" placeholder="任何補充說明都歡迎填寫…"></textarea>
+      </div>
+    </div>
+
+    <!-- SUBMIT -->
+    <div class="submit-section">
+      <p>填寫完畢後點擊送出，又嘉將盡快透過 LINE 與您聯繫<br>為您規劃最適合的纖萃使用方式 🌿</p>
+      <button type="submit" class="btn-submit" id="submitBtn">
+        <span class="btn-text">送出諮詢表單</span>
+        <div class="spinner"></div>
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-card">
+    <span class="success-icon">🎉</span>
+    <h2>成功送出！</h2>
+    <p>感謝您填寫體態管理諮詢表<br>又嘉已收到您的資料<br>將盡快透過 LINE 與您聯繫 💚</p>
+    <button class="btn-close" onclick="closeSuccess()">好的，期待聯繫！</button>
+  </div>
+</div>
+
+<!-- ERROR TOAST -->
+<div class="toast" id="errorToast"></div>
+
+<div class="footer">© 2025 又嘉健康顧問 × 纖萃體態管理 ｜ 元碩生技 · 12張國際認證</div>
+
+<script>
+// ── BMI 計算 ──────────────────────────────────
+function calcBMI() {
+  const h = parseFloat(document.getElementById('height').value);
+  const w = parseFloat(document.getElementById('weight').value);
+  const el = document.getElementById('bmiResult');
+  if (h > 50 && w > 10) {
+    const bmi = (w / ((h / 100) ** 2)).toFixed(1);
+    let cat = '', color = '';
+    if      (bmi < 18.5) { cat = '體重過輕';   color = '#5B8FD4'; }
+    else if (bmi < 24)   { cat = '健康體重 ✅'; color = '#7A9E7E'; }
+    else if (bmi < 27)   { cat = '體重過重';   color = '#E09B3D'; }
+    else if (bmi < 30)   { cat = '輕度肥胖';   color = '#D4714A'; }
+    else                 { cat = '中重度肥胖'; color = '#C84444'; }
+    el.innerHTML = `<span class="bmi-value" style="color:${color}">${bmi}</span><span style="color:${color};font-size:12px">${cat}</span>`;
+  } else {
+    el.innerHTML = '請輸入身高和體重';
+  }
+}
+
+// ── 懷孕提示 ──────────────────────────────────
+document.querySelectorAll('input[name="pregnant"]').forEach(r => {
+  r.addEventListener('change', function() {
+    document.getElementById('pregnantWarn').style.display =
+      (this.value === '懷孕中' || this.value === '哺乳中') ? 'block' : 'none';
+  });
+});
+
+// ── 進度條 ────────────────────────────────────
+function updateProgress() {
+  const allInputs = document.querySelectorAll('input:not([type="radio"]):not([type="checkbox"]), select, textarea');
+  const radios = [...new Set([...document.querySelectorAll('input[type="radio"]')].map(r => r.name))];
+  const checks = [...new Set([...document.querySelectorAll('input[type="checkbox"]')].map(c => c.name))];
+  const total = allInputs.length + radios.length + checks.length;
+  let filled = 0;
+  allInputs.forEach(el => { if (el.value.trim() !== '') filled++; });
+  radios.forEach(n => { if (document.querySelector(`[name="${n}"]:checked`)) filled++; });
+  checks.forEach(n => { if (document.querySelector(`[name="${n}"]:checked`)) filled++; });
+  const pct = Math.round((filled / total) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `完成度 ${pct}%`;
+}
+document.querySelectorAll('input, select, textarea').forEach(el => {
+  el.addEventListener('change', updateProgress);
+  el.addEventListener('input', updateProgress);
+});
+
+// ── Error Toast ───────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('errorToast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+// ── 表單序列化 ────────────────────────────────
+function serializeForm(form) {
+  const fd = new FormData(form);
+  const obj = {};
+  // 先處理 checkbox（多值）
+  form.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    if (!obj[cb.name]) obj[cb.name] = [];
+  });
+  for (let [k, v] of fd.entries()) {
+    if (Array.isArray(obj[k])) {
+      obj[k].push(v);
+    } else if (obj[k] !== undefined) {
+      obj[k] = [obj[k], v];
+    } else {
+      obj[k] = v;
+    }
+  }
+  // checkbox 陣列轉字串
+  Object.keys(obj).forEach(k => {
+    if (Array.isArray(obj[k])) obj[k] = obj[k].join('、');
+  });
+  return obj;
+}
+
+// ── 送出表單 ──────────────────────────────────
+document.getElementById('mainForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  // 必填驗證
+  const nameVal  = this.querySelector('[name="name"]').value.trim();
+  const conVal   = this.querySelector('[name="contact"]').value.trim();
+  const ageVal   = this.querySelector('[name="age"]').value.trim();
+  const genderVal= this.querySelector('[name="gender"]').value;
+  const heightVal= this.querySelector('[name="height"]').value.trim();
+  const weightVal= this.querySelector('[name="weight"]').value.trim();
+  if (!nameVal || !conVal || !ageVal || !genderVal || !heightVal || !weightVal) {
+    showToast('⚠️ 請填寫姓名、聯絡方式、年齡、性別、身高、體重');
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  const payload = serializeForm(this);
+  // 加入送出時間
+  payload.submitted_at = new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' });
+
+  try {
+    const res = await fetch(GAS_URL, {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+    const json = await res.json();
+    if (json.status === 'ok') {
+      document.getElementById('successOverlay').classList.add('show');
+      document.body.style.overflow = 'hidden';
+    } else {
+      throw new Error(json.message || '伺服器錯誤');
+    }
+  } catch (err) {
+    showToast('❌ 送出失敗，請稍後再試（' + err.message + '）');
+    console.error(err);
+  } finally {
+    btn.classList.remove('loading');
+    btn.disabled = false;
+  }
+});
+
+function closeSuccess() {
+  document.getElementById('successOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+</script>
+</body>
+</html>
